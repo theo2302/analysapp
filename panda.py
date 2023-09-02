@@ -80,11 +80,11 @@ if uploaded_file is not None:
 
 
     # Option to create a histogram
-    create_histogram = st.checkbox("Create Histogram")
+    create_histogram = st.checkbox("Crie um Histograma")
 
     # Allow the user to select x and y axis columns for the histogram
-    x_axis = st.selectbox("Select X-axis column:", df.columns)
-    y_axis = st.selectbox("Select Y-axis column:", df.columns)
+    x_axis = st.selectbox("Selecione X-axis:", df.columns)
+    y_axis = st.selectbox("Selecione Y-axis:", df.columns)
 
     if create_histogram:
         # Filter out rows with NaN values in the selected columns
