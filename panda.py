@@ -37,6 +37,10 @@ if uploaded_file is not None:
 
     # You can perform various operations on the DataFrame here
     # For example, you can display a summary of the DataFrame:
+
+    null_count = pd.DataFrame(df.isna().sum())
+
+    st.write('Valores nulos', null_count)
     
     st.write("Resumo estatistico:", df.describe())
 
@@ -45,22 +49,52 @@ if uploaded_file is not None:
     sns.heatmap(df.corr(numeric_only=True), annot=False, linewidth=.5, cmap='Blues', vmin=-1, vmax=1)
     st.pyplot(plt)
 
-    st.header("Agrupamento de dados")
 
-# Check if a DataFrame has been created
-
-    # Create a checkbox for grouping by columns
-    groupby_columns = st.multiselect("Selecione Colunas:", df.columns)
+    st.header("Agrupamento por coluna")
+    # Checkbox for grouping by columns
+    groupby_columns = st.selectbox("Selecione Colunas:", df.columns)
 
     if groupby_columns:
         # Create a dropdown for selecting an aggregate function
         aggregate_function = st.selectbox("Selecione uma função agregadora:", ["mean", "sum", "min", "max"])
 
-        # Group the DataFrame by the selected columns and apply the aggregate function
+        # Group the DataFrame by the selected columns and apply aggregate function
         grouped_df = df.groupby(groupby_columns).agg(aggregate_function)
 
-        # Display the grouped DataFrame
+        # Display grouped DataFrame
         st.write("DataFrame agrupado:", grouped_df)
 
-# Optionally, you can add other widgets and interact with the DataFrame further.
 
+
+    st.header("Remava observações por colunas")
+    # Checkbox for grouping by columns
+    col_choise = st.multiselect("Coluna(s):", df.columns)
+
+    if col_choise:
+        # Group the DataFrame by the selected columns and apply aggregate function
+        df = df.dropna(subset= col_choise)
+
+        # Display grouped DataFrame
+        st.write("DataFrame:", pd.DataFrame(df.isna().sum()))
+    
+
+
+    # Option to create a histogram
+    create_histogram = st.checkbox("Create Histogram")
+
+    # Allow the user to select x and y axis columns for the histogram
+    x_axis = st.selectbox("Select X-axis column:", df.columns)
+    y_axis = st.selectbox("Select Y-axis column:", df.columns)
+
+    if create_histogram:
+        # Filter out rows with NaN values in the selected columns
+        filtered_df = df.dropna(subset=[x_axis, y_axis])
+
+        # Create and display the histogram using matplotlib
+        plt.figure(figsize=(8, 6))
+        plt.hist2d(filtered_df[x_axis], filtered_df[y_axis], bins=(50, 50), cmap=plt.cm.jet)
+        plt.colorbar(label='Frequency')
+        plt.xlabel(x_axis)
+        plt.ylabel(y_axis)
+        plt.title(f"Histogram of {x_axis} vs {y_axis}")
+        st.pyplot(plt)
