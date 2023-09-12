@@ -59,7 +59,7 @@ if uploaded_file is not None:
         aggregate_function = st.selectbox("Selecione uma função agregadora:", ["mean", "sum", "min", "max"])
 
         # Group the DataFrame by the selected columns and apply aggregate function
-        grouped_df = df.groupby(groupby_columns).agg(aggregate_function)
+        grouped_df = df.groupby(groupby_columns).agg(aggregate_function, numeric_only= True)
 
         # Display grouped DataFrame
         st.write("DataFrame agrupado:", grouped_df)
