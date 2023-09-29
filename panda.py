@@ -92,7 +92,7 @@ if uploaded_file is not None:
 
         # Create and display the histogram using matplotlib
         plt.figure(figsize=(8, 6))
-        plt.hist(filtered_df[x_axis], filtered_df[y_axis], bins=(50, 50), cmap=plt.cm.jet)
+        plt.hist(filtered_df[x_axis], filtered_df[y_axis], bins=50, cmap=plt.cm.jet)
         plt.colorbar(label='Frequency')
         plt.xlabel(x_axis)
         plt.ylabel(y_axis)
